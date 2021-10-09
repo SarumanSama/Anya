@@ -1,4 +1,4 @@
-import { readdirSync, statSync, unlinkSync } from 'fs'
+import { readdirSync, statSync } from 'fs'
 import { join } from 'path'
 import axios from 'axios'
 import { format } from 'util'
@@ -48,7 +48,8 @@ export default class Util {
     }
 
     public swap = <T>(array: T[], index1: number, index2: number): T[] => {
-        ;[array[index1], array[index2]] = [array[index2], array[index1]]
+        //prettier-ignore
+        [array[index1], array[index2]] = [array[index2], array[index1]]
         return array
     }
 
