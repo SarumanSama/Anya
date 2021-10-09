@@ -35,25 +35,35 @@ export class MessageHandler {
         }
     }
 
-    public handle = async (M: Message): Promise<void> => {
-        const inText = this.client.util.format('In: ', chalk.yellow(M.group?.title) || 'Direct Message')
-        const args = this.parseArgs(M.content)
-        if (!args.command) return
-        if (!args.command.startsWith(this.client.config.prefix))
-            return this.client.log(`Message From: `, chalk.yellow(M.sender.username), inText)
-        args.command = args.command.slice(this.client.config.prefix.length)
-        this.client.log(`Command From`, chalk.yellow(M.sender.username), inText)
-        const command = this.commands.get(args.command) || this.aliases.get(args.command)
-        if (!command) return void M.reply(`Command \`${args.command}\` not found.`)
-        if (command.options.group && !M.group) return void M.reply(`Command \`${command.id}\` is a group command.`)
-        if (command.options.group && command.options.admin && !M.isAdminMessage)
-            return void M.reply(`Command \`${command.id}\` is a group command and requires admin permissions.`)
-        if (command.options.mod && !M.sender.isMod) return void M.reply(`Command \`${command.id}\` is a mod command.`)
-        this.execute(command, M, args)
+    private logMessage = (command = true, username = 'Someone', chat = 'Direct Message') => {
+        this.client.log(
+            this.client.util.format(
+                '%s From: %s In: %s',
+                chalk.yellow(command ? 'Command' : 'Message'),
+                chalk.cyan(username),
+                chalk.green(chat)
+            )
+        )
     }
+
+    public handle = async (M: Message): Promise<void> => {
+        const { command, raw, args, flags, text } = this.parseArgs(M.content)
+        const username = M.sender.username ?? M.sender.jid ?? M.from
+        if (!command.startsWith(this.client.config.prefix)) return void this.logMessage(false, username, M.group?.title)
+        const c = command.slice(this.client.config.prefix.length)
+        if (!c) return void M.reply('No command specified.')
+        const cmd = this.commands.get(c) ?? this.aliases.get(c)
+        this.logMessage(true, M.sender.username || M.sender.jid || M.from, M.group?.title)
+        if (!cmd) return void M.reply(`Command "${command}" not found.`)
+        if (cmd.options.mod && !M.sender.isMod) return void M.reply('You must be a moderator to use this command.')
+        if (cmd.options.admin && !M.isAdminMessage) return void M.reply('You must be an admin to use this command.')
+        if (cmd.options.group && M.chat === 'dm') return void M.reply('You must be in a group to use this command.')
+        this.execute(cmd, M, { command, args, flags, text, raw })
+    }
+
     private parseArgs = (raw: string): IParsedArgs => {
         const args = raw.split(' ')
-        const command = args.shift()?.toLocaleLowerCase() || ''
+        const command = args.shift()?.toLocaleLowerCase() ?? ''
         const text = args.join(' ')
         const flags: Record<string, string> = {}
         for (const arg of args) {
@@ -93,6 +103,7 @@ export class MessageHandler {
         if (typeof command === 'string') command = this.getCommand(command)
         this.addToCategory(command)
         this.commands.set(command.id, command)
+        for (const alias of command.options.aliases ?? []) this.aliases.set(alias, command)
     }
 
     public getCommand(path: string): BaseCommand {
