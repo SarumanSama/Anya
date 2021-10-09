@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import create, { WAMessage, Contact, SocketConfig, DisconnectReason, BaileysEventMap } from '@adiwajshing/baileys'
+import create, {
+    WAMessage,
+    Contact,
+    SocketConfig,
+    DisconnectReason,
+    MediaType,
+    BaileysEventMap,
+    downloadContentFromMessage,
+    proto
+} from '@adiwajshing/baileys'
 import Util from '../Helpers/Utils'
 import { IClientConfig, IUser, JID } from '../typings/Client'
 import Database from './Database'
@@ -9,6 +18,7 @@ import EventEmitter from 'events'
 import { Boom } from '@hapi/boom'
 import { BAILEYS_METHODS } from '../Constants'
 
+export type DownloadableMessage = Parameters<typeof downloadContentFromMessage>[0]
 export type Baileys = ReturnType<typeof create>
 
 export type BailKeys = keyof Baileys
@@ -114,8 +124,28 @@ export default class Client extends EventEmitter implements Baileys {
 
     public util = new Util()
 
-    log = (...args: unknown[]): void => {
+    public log = (...args: unknown[]): void => {
         console.log(chalk.blue(new Date().toString()), chalk.green(`[${this.config.session}]`), ...args)
+    }
+
+    public downloadMediaMessage = async (M: Message | proto.IMessage): Promise<Buffer> => {
+        let msg: DownloadableMessage
+        let type: string
+        if (M instanceof Message) {
+            const { message } = M.raw
+            if (!message) throw new Error('Message is not a media message')
+            type = M.type
+            msg = message[type as keyof typeof message] as DownloadableMessage
+        } else {
+            type = Object.keys(M)[0] as string
+            msg = M[type as keyof typeof M] as DownloadableMessage
+        }
+        const stream = await downloadContentFromMessage(msg, type.replace('Message', '') as MediaType)
+        let buffer = Buffer.from([])
+        for await (const chunk of stream) {
+            buffer = Buffer.concat([buffer, chunk])
+        }
+        return buffer
     }
 
     /* Temp Baileys Implementation*/

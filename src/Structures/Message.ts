@@ -1,7 +1,9 @@
-import { AnyMessageContent, MessageType, WAMessage, MiscMessageGenerationOptions } from '@adiwajshing/baileys'
+import { AnyMessageContent, MessageType, WAMessage, MiscMessageGenerationOptions, proto } from '@adiwajshing/baileys'
 import { GID, IUser, JID } from '../typings/Client'
 import Client from './Client'
 import Group from './Group'
+
+export type IMessage = proto.ImageMessage
 
 class Message {
     public supportedMediaMessages = new Array<MessageType>('imageMessage', 'videoMessage')
@@ -13,6 +15,13 @@ class Message {
     public mentioned = new Array<string>()
 
     public sender: IUser
+
+    public quoted?: {
+        sender: IUser
+        message: proto.IMessage
+    }
+
+    public urls = new Array<string>()
 
     public readonly isAdminMessage = false
 
@@ -41,12 +50,32 @@ class Message {
                 : []) || []
 
         array.filter(this.client.util.isTruthy).forEach((jid) => this.mentioned.push(jid))
+
+        if (this.M.message?.[type as 'extendedTextMessage']?.contextInfo?.quotedMessage) {
+            const { quotedMessage, participant } = this.M.message?.[type as 'extendedTextMessage']?.contextInfo ?? {}
+            if (quotedMessage && participant) {
+                const message = JSON.parse(JSON.stringify(M).replace('quotedM', 'm')).message?.[
+                    type as 'extendedTextMessage'
+                ].contextInfo.message
+
+                message.key = M.key
+                this.quoted = {
+                    sender: this.client.getContact(participant) ?? { username: '', jid: participant, isMod: false },
+                    message
+                }
+            }
+        }
     }
 
     public build = async (): Promise<this> => {
         if (this.chat === 'dm') return this
         this.group = await new Group(this.from, this.client).build()
+        this.client.util.getUrls(this.content).forEach((url) => this.urls.push(url))
         return this
+    }
+
+    get raw(): WAMessage {
+        return this.M
     }
 
     get chat(): 'group' | 'dm' {
@@ -63,7 +92,9 @@ class Message {
 
     public reply = async (
         content: string | Buffer,
-        type: 'text' | 'image' | 'audio' | 'video' = 'text',
+        type: 'text' | 'image' | 'audio' | 'video' | 'sticker' = 'text',
+        mimetype?: string,
+        caption?: string,
         options: MiscMessageGenerationOptions = {}
     ): ReturnType<typeof this.client.sendMessage> => {
         options.quoted = this.M
@@ -71,7 +102,9 @@ class Message {
         return this.client.sendMessage(
             this.from,
             {
-                [type]: content
+                [type]: content,
+                mimetype,
+                caption
             } as unknown as AnyMessageContent,
             options
         )
@@ -79,3 +112,4 @@ class Message {
 }
 
 export default Message
+export { WAMessage }
