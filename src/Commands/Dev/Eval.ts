@@ -6,7 +6,7 @@ import { IParsedArgs } from '../../typings/Command'
 @Command('eval', {
     aliases: ['run'],
     category: 'Dev',
-    mod : true,
+    mod: true,
     description: {
         content: 'For Super Users.'
     }
@@ -18,8 +18,9 @@ export default class extends BaseCommand {
             const output = eval(parsedArgs.text) || 'Executed Javascript!'
             console.log(output)
             out = JSON.stringify(output)
-        } catch (err : any) {
-            out = err.message
+        } catch (err) {
+            console.log(err)
+            out = (err as Error)?.message || 'An Error Occured. See your console for more info'
         }
         return void (await M.reply(out))
     }
