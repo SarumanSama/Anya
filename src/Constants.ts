@@ -40,3 +40,5 @@ export const BAILEYS_METHODS = [
     'end',
     'waitForConnectionUpdate'
 ] as const
+
+export const NEKOS_DOT_LIFE = 'https://nekos.life/api/v2/img/'
