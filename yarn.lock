@@ -840,6 +840,15 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
+anime-wallpaper@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/anime-wallpaper/-/anime-wallpaper-1.0.2.tgz#df82767d50665f6d9e6849982fe1381cedbffa98"
+  integrity sha512-f5jMfFLjplllERBohz3mkgijDLpRlCu13S7bW7PWwxhYxQp2VQFbDA4/ZaQWl++Q9m1RcRwmG5oTNvuXRhF/iw==
+  dependencies:
+    cheerio "^1.0.0-rc.5"
+    node-superfetch "^0.1.11"
+    random-useragent "^0.5.0"
+
 ansi-colors@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.1.tgz#cbb9ae256bf750af1eab344f229aa27fe94ba348"
@@ -1255,7 +1264,7 @@ cheerio-select@^1.5.0:
     domhandler "^4.2.0"
     domutils "^2.7.0"
 
-cheerio@^1.0.0-rc.10:
+cheerio@^1.0.0-rc.10, cheerio@^1.0.0-rc.5:
   version "1.0.0-rc.10"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.10.tgz#2ba3dcdfcc26e7956fc1f440e61d51c643379f3e"
   integrity sha512-g0J0q/O6mW8z5zxQ3A8E8J1hUgp4SMOvEoW/x84OwyHKe/Zccz83PVT4y5Crcr530FV6NgmKI1qvGTKVl9XXVw==
@@ -2607,7 +2616,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
@@ -2989,6 +2998,14 @@ music-metadata@^7.4.1:
     strtok3 "^6.2.4"
     token-types "^4.1.1"
 
+mywaifulist-scraper@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/mywaifulist-scraper/-/mywaifulist-scraper-0.0.1.tgz#094abb19ff8464a6aa3ea724fe37fcbc06bf243e"
+  integrity sha512-FchX/cNPZiiVpAY5IB2ozOgIFDRUktQtmYcJTF5kpmLOS9oh4ZRd9NDs56BXe7Qif4P7jyoLyhq8JHAtFXsDwQ==
+  dependencies:
+    axios "^0.21.1"
+    cheerio "^1.0.0-rc.5"
+
 nan@^2.14.0, nan@^2.14.1:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
@@ -3072,6 +3089,14 @@ node-gyp@^7.0.0:
     semver "^7.3.2"
     tar "^6.0.2"
     which "^2.0.2"
+
+node-superfetch@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/node-superfetch/-/node-superfetch-0.1.11.tgz#6142465a8f12ac9409bb7145521125a877ed4336"
+  integrity sha512-984lO43EvDtjBOpVXDqnR2L5+pVt+qWfqIE6H7Sl21BoIz26OwSKxBnO9ZmJkYXAimR64MUPiz6tn5hySy1d0Q==
+  dependencies:
+    form-data "^3.0.0"
+    node-fetch "^2.6.0"
 
 node-webpmux@^3.1.0:
   version "3.1.0"
@@ -3476,6 +3501,20 @@ quick-lru@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
+
+random-seed@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/random-seed/-/random-seed-0.3.0.tgz#d945f2e1f38f49e8d58913431b8bf6bb937556cd"
+  integrity sha1-2UXy4fOPSejViRNDG4v2u5N1Vs0=
+  dependencies:
+    json-stringify-safe "^5.0.1"
+
+random-useragent@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/random-useragent/-/random-useragent-0.5.0.tgz#83a92dfdfb2366972d0a1f81fc93d5ef85807ae8"
+  integrity sha512-FUMkqVdZeoSff5tErNL3FFGYXElDWZ1bEuedhm5u9MdCFwANriJWbHvDRYrLTOzp/fBsBGu5J1cWtDgifa97aQ==
+  dependencies:
+    random-seed "^0.3.0"
 
 range-parser@~1.2.1:
   version "1.2.1"
@@ -4390,7 +4429,21 @@ yargs-parser@^20.2.1:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
-yt-search@^2.10.0, yt-search@^2.8.0:
+yt-search@^2.10.2:
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/yt-search/-/yt-search-2.10.2.tgz#57790043b958d3f9e357607b3f3c252ba2314b59"
+  integrity sha512-cwg8yK3pVuwczfoADOqhVHj5i/Qv8xb7/wYh3gwvfGiHsxpgDtMKKuBWyOenrXwwC7A/nj3YQYsfDlZ2/rk83w==
+  dependencies:
+    async.parallellimit "~0.5.2"
+    boolstring "~1.0.2"
+    cheerio "^1.0.0-rc.10"
+    dasu "~0.4.2"
+    human-time "0.0.2"
+    jsonpath-plus "~5.0.2"
+    minimist "~1.2.5"
+    node-fzf "~0.5.1"
+
+yt-search@^2.8.0:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/yt-search/-/yt-search-2.10.1.tgz#971c2b4675e31ed503218e101583d0995c435589"
   integrity sha512-7xORFvQMkzkVVOsRVV6qW+Ld8FIl8OQcN3ThsDf04jwr2GyR4miGmC98IA2X/gjTWUEj2SRhmzw6kApj3LHdsQ==
