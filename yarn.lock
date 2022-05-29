@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@adiwajshing/baileys@https://github.com/adiwajshing/baileys#multi-device":
+"@adiwajshing/baileys@https://github.com/adiwajshing/baileys":
   version "4.0.0"
   resolved "https://github.com/adiwajshing/baileys#0c1045b55b6de740f2b7239e3fa9094330581690"
   dependencies:
